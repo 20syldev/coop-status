@@ -2,6 +2,16 @@ require('dotenv').config();
 const {Client, GatewayIntentBits, ActivityType, Partials} = require('discord.js');
 const client = new Client({intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMembers, GatewayIntentBits.MessageContent, GatewayIntentBits.DirectMessages, GatewayIntentBits.GuildPresences], 'partials': [Partials.Channel]});
 
+// Express
+const express = require('express');
+const app = express();
+const port = process.env.PORT || 4000;
+
+app.listen(port, () => {
+    console.log(`Serveur défini avec le port ${port}`);
+});
+
+
 client.on('ready', (x) => {
     console.log(`✅ ${x.user.tag} en ligne !`);
     const serveur = client.guilds.cache.get('1056940597975449710');
