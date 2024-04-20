@@ -2,9 +2,8 @@
   <a href="https://coopbot.xyz"><img src="https://github.com/20syldev/coop-status/blob/main/src/coopstatus.png" alt="Logo" width="25%" height="auto"></a>
 
 # Coop Status - Bot Discord
-  [![Badge1](https://img.shields.io/badge/Bot%20:-v1.1.0-6479ee?labelColor=23272A)](https://coopbot.xyz/status)
-  [![Badge2](https://img.shields.io/discord/1056940597975449710?logo=discord&labelColor=23272A&label=Discord&color=5e60ce)](https://coopbot.xyz/discord)
-
+  [![Version](https://img.shields.io/badge/Bot%20:-v1.1.0-6479ee?labelColor=23272A)](https://coopbot.xyz/status)
+  [![Discord](https://img.shields.io/discord/1056940597975449710?logo=discord&labelColor=23272A&label=Discord&color=5e60ce)](https://coopbot.xyz/discord)
 </div>
 
 ---
