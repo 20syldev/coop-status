@@ -3,7 +3,7 @@
 
 # Coop Status - Bot Discord
   [![Version](https://custom-icon-badges.demolab.com/badge/Bot%20:-v1.1.0-6479ee?logo=coopstatus&labelColor=23272A)](https://github.com/20syldev/coop-status/releases/latest)
-  [![Discord](https://img.shields.io/discord/1056940597975449710?logo=discord&labelColor=23272A&label=Discord&color=5e60ce)](https://coopbot.xyz/discord)
+  [![Developpement](https://img.shields.io/badge/Développement%20:-Terminé-37a658?labelColor=23272A)](https://coopbot.xyz/discord)
 </div>
 
 ---
