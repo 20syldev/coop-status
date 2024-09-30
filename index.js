@@ -1,6 +1,9 @@
 require('dotenv').config();
-const {Client, GatewayIntentBits, ActivityType, Partials} = require('discord.js');
-const client = new Client({intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMembers, GatewayIntentBits.MessageContent, GatewayIntentBits.DirectMessages, GatewayIntentBits.GuildPresences], 'partials': [Partials.Channel]});
+const { Client, GatewayIntentBits, ActivityType, Partials } = require('discord.js');
+const client = new Client({ 
+    intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMembers, GatewayIntentBits.MessageContent, GatewayIntentBits.DirectMessages, GatewayIntentBits.GuildPresences], 
+    partials: [Partials.Channel] 
+});
 
 // Express
 const express = require('express');
