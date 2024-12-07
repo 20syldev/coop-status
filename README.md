@@ -1,5 +1,5 @@
 <div align="center">
-  <a href="https://coopbot.xyz"><img src="https://github.com/20syldev/coop-status/blob/main/src/coopstatus.png" alt="Logo" width="25%" height="auto"></a>
+  <a href="https://coopbot.xyz"><img src="https://github.com/20syldev/coop-status/blob/master/src/coopstatus.png" alt="Logo" width="25%" height="auto"></a>
 
   # Coop Status - Bot Discord
   [![Version](https://custom-icon-badges.demolab.com/badge/Bot%20:-v1.1.0-6479ee?logo=coopstatus&labelColor=23272A)](https://github.com/20syldev/coop-status/releases/latest)
