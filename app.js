@@ -1,3 +1,8 @@
+/** 
+ * Discord.js Bot, works but need to be improved.
+ * Project is now archived on GitHub, and will not be updated.
+ * If you want to use this bot locally, follow the steps on the GitHub page.
+ */
 require('dotenv').config();
 const { Client, GatewayIntentBits, ActivityType, Partials } = require('discord.js');
 const client = new Client({ 
@@ -11,7 +16,7 @@ const app = express();
 const port = process.env.PORT || 4000;
 
 app.listen(port, () => {
-    console.log(`Serveur défini avec le port ${port}`);
+    console.log(`Serveur en ligne sur le port ${port}`);
 });
 
 // https
@@ -24,7 +29,7 @@ https.createServer(function (req, res) {
 
 // Discord
 client.on('ready', (x) => {
-    console.log(`✅ ${x.user.tag} en ligne !`);
+    console.log(`✅ Bot en ligne !`);
     const serveur = client.guilds.cache.get('1056940597975449710');
     const membres = serveur.memberCount;
     const donateurs = serveur.members.cache.filter(member => member.roles.cache.has('1061274952260653146')).size;
@@ -36,8 +41,7 @@ client.on('ready', (x) => {
         },
         {
             name: '!report',
-            type: ActivityType.Streaming,
-            url: 'https://twitch.tv/20syl__'
+            type: ActivityType.Playing,
         },
         {
             name: `${donateurs} donateurs`,
@@ -77,34 +81,32 @@ client.on('guildMemberUpdate', (oldMember, newMember) => {
     const hasRoleToCheck = newMember.roles.cache.has(roleToCheckId);
   
     if (hasRoleTiers && !hasRoleToCheck) {
-      setTimeout(() => {
-        newMember.roles.remove(roleTiersId).catch(console.error);
-      }, delay);
+        setTimeout(() => {
+            newMember.roles.remove(roleTiersId).catch(console.error);
+        }, delay);
     }
 });
 
 // Statut Custom ajout rôle soutien
 client.on("presenceUpdate", async (oldPresence, newPresence) => {
     if (newPresence.member.user.bot) return;
-    
+
     const memberId = newPresence.userId;
     const roleId = "1101080642432794655";
     const guild = await client.guilds.fetch('1056940597975449710');
     const member = await guild.members.fetch(memberId);
 
     if (!member.user.bot) {
-        if (newPresence.activities.some(activity => activity.name === "Custom Status" && activity.state.includes("coopbot.xyz/discord"))) {
-            try {
+        const hasCustomStatus = newPresence.activities.some(activity => activity.name === "Custom Status" && activity.state &&activity.state.includes("coopbot.xyz/discord"));
+
+        try {
+            if (hasCustomStatus) {
                 await member.roles.add(roleId);
-            } catch (err) {
-                console.error(`Erreur lors de l'ajout du rôle ${roleId} à ${memberId}:`, err);
-            }
-        } else {
-            try {
+            } else {
                 await member.roles.remove(roleId);
-            } catch (err) {
-                console.error(`Erreur lors de la suppression du rôle ${roleId} à ${memberId}:`, err);
             }
+        } catch (err) {
+            console.error(`Erreur lors de la mise à jour du rôle ${roleId} pour ${memberId} : ${err}`);
         }
     }
 });
@@ -132,16 +134,13 @@ client.on('guildMemberRemove', async (member) => {
 // Dès que le salon getpack-... est créé, envoyer un embed d'introduction
 client.on('channelCreate', async (channel) => {
     if (channel.name.startsWith('getpack-')) {
-      const embed = {
-        title: '👋 Bonjour / Bonsoir, voici votre ticket !',
-        description: '> Veuillez envoyer ci-dessous une capture d\'écran de votre mail (utilisez https://prnt.sc/ pour envoyer un screen).\n\n> C\'est une erreur ? Utilisez la commande `.packclose`.\nSoyez patient jusqu\'à ce qu\'un membre du personnel vérifie votre ticket !\n\n🔒 **Fermer**\nVous ou le personnel pouvez utiliser la commande `.packclose` pour fermer le ticket.\n\n> Objet du ticket : Recevoir les récompenses d\'un Pack',
-        color: 0x69a5dc,
-        thumbnail: {
-          url: 'https://cdn.discordapp.com/attachments/899671061933740042/899676586691923988/52722-ticket.png'
-        },
-        timestamp: new Date().toISOString()
-      };
-      await channel.send({ embeds: [embed] });
+        const embed = {
+            title: '👋 Bonjour / Bonsoir, voici votre ticket !',
+            description: '> Veuillez envoyer ci-dessous une capture d\'écran de votre mail (utilisez https://prnt.sc/ pour envoyer un screen).\n\n> C\'est une erreur ? Utilisez la commande `.packclose`.\nSoyez patient jusqu\'à ce qu\'un membre du personnel vérifie votre ticket !\n\n🔒 **Fermer**\nVous ou le personnel pouvez utiliser la commande `.packclose` pour fermer le ticket.\n\n> Objet du ticket : Recevoir les récompenses d\'un Pack',
+            color: 0x69a5dc,
+            timestamp: new Date().toISOString()
+        };
+        await channel.send({ embeds: [embed] });
     }
 });
 
@@ -150,37 +149,33 @@ client.on('messageCreate', async (message) => {
     const prefix = '!';
     if (message.author.bot) return;
     if (!message.guild) {
-      if (message.content.startsWith(prefix + 'report')) {
-        const args = message.content.slice(prefix.length).trim().split(/ +/);
-        const command = args.shift().toLowerCase();
-  
-        if (args.length === 0) {
-          const errorMessage = await message.reply('Utilisation incorrecte. Utilisez `!report <problème>` pour créer un rapport.');
-          setTimeout(() => {
-            errorMessage.delete();
-          }, 5000);
-          return;
+        if (message.content.startsWith(prefix + 'report')) {
+            const args = message.content.slice(prefix.length).trim().split(/ +/);
+            const command = args.shift().toLowerCase();
+
+            if (args.length === 0) {
+                const errorMessage = await message.reply('Utilisation incorrecte. Utilisez `!report <problème>` pour créer un rapport.');
+                setTimeout(() => {
+                    errorMessage.delete();
+                }, 5000);
+                return;
+            }
+
+            const guild = client.guilds.cache.get('1056940597975449710');
+            if (!guild) return;
+
+            const modmailChannel = guild.channels.cache.get('1113838050636730378');
+            if (!modmailChannel) return;
+
+            const reportContent = args.join(' ');
+            const modmailMessage = `📋 Rapport crée par ${message.author} (${message.author.id}) :\n\`\`\`${reportContent}\`\`\``;
+            modmailChannel.send(modmailMessage);
+
+            const confirmationMessage = await message.reply(`Votre problème a été signalé !`);
+            setTimeout(() => {
+                confirmationMessage.delete();
+            }, 5000);
         }
-  
-        const guild = client.guilds.cache.get('1056940597975449710');
-        if (!guild) {
-          return;
-        }
-  
-        const modmailChannel = guild.channels.cache.get('1113838050636730378');
-        if (!modmailChannel) {
-          return;
-        }
-  
-        const reportContent = args.join(' ');
-        const modmailMessage = `📋 Rapport crée par ${message.author} (${message.author.id}) :\n\`\`\`${reportContent}\`\`\``;
-        modmailChannel.send(modmailMessage);
-  
-        const confirmationMessage = await message.reply(`Votre problème a été signalé !`);
-        setTimeout(() => {
-          confirmationMessage.delete();
-        }, 5000);
-      }
     }
 });
 
